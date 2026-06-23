@@ -2,8 +2,8 @@ cff-version: 1.2.0
 message: "If you use this checklist, please cite it as below."
 title: "Open Hardware Application Security Audit Checklist"
 authors:
-  - family-names: Brown
-    given-names: Joseph J.
+  - family-names: "Brown"
+    given-names: "Joseph J."
   - name: "Nanosystems Lab"
 version: "1.1"
 date-released: "2026-06-23"
