@@ -22,7 +22,7 @@ In scope:
 
 - Checklist content in this repository.
 - Template files in this repository.
-- Example GitHub Actions/Dependabot/security configuration.
+- Example GitHub Actions, Dependabot, and repository security configuration.
 
 Out of scope:
 
