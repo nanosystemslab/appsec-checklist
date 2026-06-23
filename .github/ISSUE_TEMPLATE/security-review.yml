@@ -1,0 +1,43 @@
+name: Student project security review
+about: Track a security-review request for an internet-connected open hardware project.
+title: "Security review: "
+labels: ["security-review", "student-project"]
+body:
+  - type: input
+    id: project
+    attributes:
+      label: Project name
+    validations:
+      required: true
+  - type: dropdown
+    id: risk
+    attributes:
+      label: Preliminary risk level
+      options:
+        - Low
+        - Medium
+        - High
+        - Unsure
+    validations:
+      required: true
+  - type: textarea
+    id: connectivity
+    attributes:
+      label: Connectivity and services
+      description: Wi-Fi, Ethernet, MQTT, HTTP API, cloud dashboard, OTA update, BLE gateway, etc.
+    validations:
+      required: true
+  - type: textarea
+    id: stop_signs
+    attributes:
+      label: Stop-sign questions triggered
+      description: List any safety, remote-control, human-data, public-internet, or credential concerns.
+    validations:
+      required: false
+  - type: textarea
+    id: needed
+    attributes:
+      label: Requested review or decision
+      description: What do you need from the reviewer?
+    validations:
+      required: true

@@ -1,0 +1,30 @@
+name: Checklist improvement
+about: Suggest an improvement to checklist content, references, templates, or workflow.
+title: "Checklist improvement: "
+labels: ["documentation", "checklist"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping improve the Open Hardware Application Security Audit Checklist.
+  - type: input
+    id: section
+    attributes:
+      label: Affected section or file
+      description: Example: CHECKLIST.md section 6, templates/threat-model.md, docs/REFERENCE_SOURCES.md
+    validations:
+      required: true
+  - type: textarea
+    id: issue
+    attributes:
+      label: What should change?
+      description: Describe the problem, missing guidance, outdated source, or proposed improvement.
+    validations:
+      required: true
+  - type: textarea
+    id: source
+    attributes:
+      label: Supporting source or rationale
+      description: Link to standards, documentation, examples, or practical experience that supports the change.
+    validations:
+      required: false
