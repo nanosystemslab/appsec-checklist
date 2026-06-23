@@ -1,0 +1,9 @@
+cff-version: 1.2.0
+message: "If you use this checklist, please cite it as below."
+title: "Open Hardware Application Security Audit Checklist"
+authors: Joseph J. Brown
+  - name: "Nanosystems Lab"
+version: "1.1"
+date-released: "2026-06-23"
+url: "https://github.com/nanosystemslab/appsec-checklist"
+license: "CC-BY-4.0"
