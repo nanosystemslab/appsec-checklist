@@ -1,0 +1,55 @@
+name: Checklist improvement
+about: Suggest an improvement to the audit checklist, templates, or references.
+title: "Checklist improvement: "
+labels: ["documentation", "checklist"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting an improvement. Please include the source or rationale when possible.
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: What should be added, changed, clarified, or removed?
+      placeholder: Describe the proposed improvement.
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Stop-sign questions
+        - Risk classification
+        - Threat modeling
+        - Network exposure
+        - Authentication and identity
+        - Authorization and remote command safety
+        - Transport security
+        - Secrets management
+        - Firmware/device hardening
+        - Web/API security
+        - Data protection/privacy
+        - Dependencies/SBOM/supply chain
+        - Logging/monitoring/incident response
+        - Templates
+        - References
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: source
+    attributes:
+      label: Source, standard, or rationale
+      description: Link to OWASP, NIST, CISA, GitHub, OpenSSF, OASIS, vendor documentation, or another verifiable source if available.
+      placeholder: Paste links or explain the basis for the change.
+    validations:
+      required: false
+  - type: textarea
+    id: proposed_text
+    attributes:
+      label: Proposed text or implementation notes
+      description: Optional suggested wording, checklist row, template change, or implementation detail.
+    validations:
+      required: false

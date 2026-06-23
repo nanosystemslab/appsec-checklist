@@ -1,0 +1,121 @@
+name: Security baseline checks
+
+on:
+  pull_request:
+    branches: ["main"]
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  baseline:
+    name: Repository hygiene and checklist checks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Verify expected repository structure
+        shell: bash
+        run: |
+          set -euo pipefail
+          required=(
+            "README.md"
+            "CHECKLIST.md"
+            "SECURITY.md"
+            "LICENSE.md"
+            "docs"
+            "templates"
+          )
+          missing=0
+          for item in "${required[@]}"; do
+            if [[ ! -e "$item" ]]; then
+              echo "Missing required item: $item"
+              missing=1
+            fi
+          done
+          exit "$missing"
+
+      - name: Check Markdown links are not local absolute paths
+        shell: python
+        run: |
+          from pathlib import Path
+          import re
+          bad = []
+          for path in Path('.').rglob('*.md'):
+              if '.git' in path.parts:
+                  continue
+              text = path.read_text(encoding='utf-8', errors='replace')
+              for match in re.finditer(r'\[[^\]]+\]\(([^)]+)\)', text):
+                  link = match.group(1).strip()
+                  if link.startswith('/mnt/') or link.startswith('file:'):
+                      bad.append((str(path), link))
+          if bad:
+              print('Found Markdown links that point to local machine paths:')
+              for path, link in bad:
+                  print(f'- {path}: {link}')
+              raise SystemExit(1)
+          print('No local absolute Markdown links found.')
+
+      - name: Basic secret-pattern scan
+        shell: python
+        run: |
+          from pathlib import Path
+          import re
+
+          # This is intentionally lightweight. It is not a replacement for
+          # GitHub secret scanning, push protection, or a dedicated tool such
+          # as gitleaks/trufflehog, but it catches common accidental examples.
+          allowlisted = {
+              '.env.example',
+              'templates/secrets-inventory.md',
+          }
+          patterns = [
+              re.compile(r'AKIA[0-9A-Z]{16}'),
+              re.compile(r'ghp_[A-Za-z0-9_]{30,}'),
+              re.compile(r'github_pat_[A-Za-z0-9_]{20,}'),
+              re.compile(r'-----BEGIN (?:RSA |EC |OPENSSH |DSA )?PRIVATE KEY-----'),
+              re.compile(r'(?i)(api[_-]?key|secret|token|password)\s*=\s*["\'][^"\']{12,}["\']'),
+          ]
+          findings = []
+          for path in Path('.').rglob('*'):
+              if not path.is_file() or '.git' in path.parts:
+                  continue
+              rel = path.as_posix()
+              if rel in allowlisted or path.name in allowlisted:
+                  continue
+              try:
+                  text = path.read_text(encoding='utf-8', errors='ignore')
+              except Exception:
+                  continue
+              for pattern in patterns:
+                  if pattern.search(text):
+                      findings.append(rel)
+                      break
+          if findings:
+              print('Potential secrets or secret-like values found:')
+              for item in sorted(set(findings)):
+                  print(f'- {item}')
+              raise SystemExit(1)
+          print('No obvious secret patterns found.')
+
+      - name: Confirm security contact placeholder was reviewed
+        shell: python
+        run: |
+          from pathlib import Path
+          path = Path('SECURITY.md')
+          if not path.exists():
+              raise SystemExit('SECURITY.md is missing')
+          text = path.read_text(encoding='utf-8', errors='replace')
+          placeholders = ['security@example.com', 'REPLACE_WITH_SECURITY_CONTACT', 'TODO_SECURITY_CONTACT']
+          found = [p for p in placeholders if p in text]
+          if found:
+              print('SECURITY.md still contains placeholder security-contact text:')
+              for p in found:
+                  print(f'- {p}')
+              print('Edit SECURITY.md before relying on this repository for vulnerability reports.')
+              raise SystemExit(1)
+          print('SECURITY.md does not contain the default placeholder contact text.')
