@@ -45,8 +45,8 @@ This checklist is grounded in public guidance from OWASP, NIST, CISA, GitHub, Op
 - [`templates/`](templates/) — copy-and-fill student project templates.
 - [`docs/GITHUB_UPLOAD_GUIDE.md`](docs/GITHUB_UPLOAD_GUIDE.md) — instructions for publishing or updating this repository.
 - [`docs/FUTURE_UPDATE_PROMPT.md`](docs/FUTURE_UPDATE_PROMPT.md) — prompt for future standards refreshes.
-- [`.github/workflows/security-baseline.yml`](.github/workflows/security-baseline.yml) — example dependency and repository security workflow.
-- [`.github/dependabot.yml`](.github/dependabot.yml) — example Dependabot configuration.
+- [`.github/workflows/security-baseline.yml`](.github/workflows/security-baseline.yml) — lightweight checks for required files/folders, Markdown links beginning with `/mnt/` or `file:`, basic secret patterns, and default security-contact placeholders; does not scan dependencies or audit application security.
+- [`.github/dependabot.yml`](.github/dependabot.yml) — separate monthly GitHub Actions version-update configuration; does not cover application dependencies or replace dependency vulnerability scanning.
 - [`SECURITY.md`](SECURITY.md) — vulnerability reporting policy template for this repository.
 
 ## GitHub Pages
